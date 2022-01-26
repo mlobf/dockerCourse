@@ -80,10 +80,16 @@ Manage Images and Containers.
         sudo docker run -p 3000:80 -d --name feedback-app feedback-node:volumes 
 
         sudo docker logs feedback-app
+
+        sudo docker build -t feedback-node:volumes .        
+
         # Para remover o container
-        sudo docker build -t feedback-node:volumes .        sudo docker rmi feedback-node:volumes --force
+        sudo docker rmi feedback-node:volumes --force
 
         sudo docker run -d -p 3000:80 --rm --name feedback-app feedback-node:volumes        
 
-        
-
+    # Para ver os volumes adminstrados pelo docker 
+        sudo docker volume COMMAND --help        
+        sudo docker volume ls
+    # Para criar uma named volume
+    sudo docker run -d -p 3000:80 --rm --name feedback-app -v feedback:/app/feedback feedback-node:volumes
