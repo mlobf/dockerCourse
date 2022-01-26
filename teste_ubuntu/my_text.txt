@@ -1,0 +1,344 @@
+
+Breve Manual do PostGres.
+
+  psql [OPTION]... [DBNAME [USERNAME]]
+
+General options:
+  -c, --command=COMMAND    run only single command (SQL or internal) and exit
+  -d, --dbname=DBNAME      database name to connect to (default: "postgres")
+  -f, --file=FILENAME      execute commands from file, then exit
+  -l, --list               list available databases, then exit
+  -v, --set=, --variable=NAME=VALUE
+                           set psql variable NAME to VALUE
+                           (e.g., -v ON_ERROR_STOP=1)
+  -V, --version            output version information, then exit
+  -X, --no-psqlrc          do not read startup file (~/.psqlrc)
+  -1 ("one"), --single-transaction
+                           execute as a single transaction (if non-interactive)
+  -?, --help[=options]     show this help, then exit
+      --help=commands      list backslash commands, then exit
+      --help=variables     list special variables, then exit
+
+Input and output options:
+  -a, --echo-all           echo all input from script
+  -b, --echo-errors        echo failed commands
+  -e, --echo-queries       echo commands sent to server
+  -E, --echo-hidden        display queries that internal commands generate
+  -L, --log-file=FILENAME  send session log to file
+  -n, --no-readline        disable enhanced command line editing (readline)
+  -o, --output=FILENAME    send query results to file (or |pipe)
+  -q, --quiet              run quietly (no messages, only query output)
+  -s, --single-step        single-step mode (confirm each query)
+  -S, --single-line        single-line mode (end of line terminates SQL command)
+
+Output format options:
+  -A, --no-align           unaligned table output mode
+      --csv                CSV (Comma-Separated Values) table output mode
+  -F, --field-separator=STRING
+                           field separator for unaligned output (default: "|")
+  -H, --html               HTML table output mode
+  -P, --pset=VAR[=ARG]     set printing option VAR to ARG (see \pset command)
+  -R, --record-separator=STRING
+                           record separator for unaligned output (default: newline)
+  -t, --tuples-only        print rows only
+  -T, --table-attr=TEXT    set HTML table tag attributes (e.g., width, border)
+  -x, --expanded           turn on expanded table output
+  -z, --field-separator-zero
+                           set field separator for unaligned output to zero byte
+  -0, --record-separator-zero
+                           set record separator for unaligned output to zero byte
+
+Connection options:
+  -h, --host=HOSTNAME      database server host or socket directory (default: "local socket")
+  -p, --port=PORT          database server port (default: "5432")
+  -U, --username=USERNAME  database user name (default: "postgres")
+  -w, --no-password        never prompt for password
+  -W, --password           force password prompt (should happen automatically)
+
+
+
+
+
+
+
+->Loga no Usuario Postgres para ter acesso ao postgres
+-----------------------------------------------------------------------------------
+sudo su postgres
+-----------------------------------------------------------------------------------
+
+
+->Abre o psql com o usuario "postgres" o database "e-trip"
+psql -U postgres -d edi -f /home/dev/Downloads/etrip_api_2019_06_04.sql
+-----------------------------------------------------------------------------------
+
+->Cria o database etrip_api
+CREATE DATABASE edi;
+-----------------------------------------------------------------------------------
+
+
+->Abre a conexao com o database etrip_api
+\c edi;
+-----------------------------------------------------------------------------------
+
+
+->Cria o Usuario etrip_api com o password 'etrip_api'
+CREATE USER edi WITH PASSWORD 'edi';
+-----------------------------------------------------------------------------------
+
+
+->Da todos os acessos ao respectivo usuario do database
+GRANT ALL PRIVILEGES ON DATABASE edi TO edi;
+
+GRANT ALL PRIVILEGES ON DATABASE edi TO edi;
+-----------------------------------------------------------------------------------
+
+->Da todos os acessos ao respectivo usuario das tabelas
+GRANT ALL ON ALL TABLES IN SCHEMA public to edi;
+
+GRANT ALL ON ALL TABLES IN SCHEMA public to edi;
+-----------------------------------------------------------------------------------
+
+
+->Da todos os acessos ao respectivo usuario as ordem preteritas do database
+GRANT ALL ON ALL SEQUENCES IN SCHEMA public to edi;
+GRANT ALL ON ALL SEQUENCES IN SCHEMA public to edi;
+
+-----------------------------------------------------------------------------------
+
+
+->Da todos os acessos ao respectivo usuario das funcoes preteritas da database
+GRANT ALL ON ALL FUNCTIONS IN SCHEMA public to edi;
+
+GRANT ALL ON ALL FUNCTIONS IN SCHEMA public to edi;
+-----------------------------------------------------------------------------------
+
+
+->Cria uma extensao; uma forma pratica de criar empacotamentos, podendo estes ser
+	funcoes ou ganchos, removendo, caso necessario, acentos foneticos.
+CREATE EXTENSION unaccent;
+-----------------------------------------------------------------------------------
+
+Lista de Commandos Uteis em PostGres
+\?
+
+1) Connect to PostgreSQL database
+psql -d database -U  user -W
+
+2) Switch connection to a new database
+\c dbname username
+
+3) List available databases
+\l
+
+4) List available tables
+\dt
+
+5) Describe a table
+\d table_name
+
+6) List available schema
+\dn
+
+7) List available functions
+\df
+
+8) List available views
+\dv
+
+9) List users and their roles
+\du
+
+11) Command history
+\s
+
+12) Execute psql commands from a file
+\i filename
+
+13) Get help on psql commands
+\?
+
+17) Quit psql
+\q
+
+
+***********************************************************************************
+COMO CRIAR UM BACKUP E RESTAURAR
+***********************************************************************************
+
+
+pg_dump -Ftb banco > banco.tar
+
+Backup local de um único banco:
+
+pg_dump -U usuario -d banco > banco.sql
+
+pg_dump -Ft banco > banco.tar
+
+O script normalmente leva a extensão .sql, por convenção, mas pode ser qualquer extensão e o script terá conteúdo texto puro.
+
+Restore de um banco local:
+
+psql -U usuario -d banco < banco.sql
+
+pg_restore -d banco banco.sql
+
+pg_restore -d banco banco.tar
+
+Obs.: Cuidado ao restaurar um banco, especialmente se existirem tabelas sem integridade. Corre-se o risco de duplicar os registros.
+
+Descompactar e fazer o restore em um só comando:
+
+gunzip -c backup.tar.gz | pg_restore -d banco
+
+
+***********************************************************************************
+
+
+[postgres@italia-a525bs ~]$ sudo psql -U postgres -d etrip_api -f /home/italia/Downloads/etrip_api_2019_06_04.sql
+
+***********************************************************************************
+
+sudo psql -U postgres -d edi -f /home/
+
+
+psql -U postgres -d rocket -f /
+
+
+***********************************************************************************
+Para apagar um banco de dados
+
+DROP DATABASES NomeDoBancoDeDados
+***********************************************************************************
+
+CONFIGURAÇÃO REPORTH
+
+CREATE DATABASE reporth;
+CREATE USER reporth WITH PASSWORD 'reporth';
+GRANT ALL PRIVILEGES ON DATABASE reporth TO reporth;
+GRANT ALL ON ALL TABLES IN SCHEMA public to reporth;
+GRANT ALL ON ALL SEQUENCES IN SCHEMA public to reporth;
+GRANT ALL ON ALL FUNCTIONS IN SCHEMA public to reporth;
+CREATE EXTENSION unaccent;
+
+
+CONFIGURAÇÃO WEBSERVICE
+
+CREATE DATABASE webservice;
+CREATE USER webservice WITH PASSWORD 'webservice';
+GRANT ALL PRIVILEGES ON DATABASE webservice TO webservice;
+GRANT ALL ON ALL TABLES IN SCHEMA public to webservice;
+GRANT ALL ON ALL SEQUENCES IN SCHEMA public to webservice;
+GRANT ALL ON ALL FUNCTIONS IN SCHEMA public to webservice;
+CREATE EXTENSION unaccent;
+
+---------------------------------------------------------------------------------------
+
+CONFIGURAÇÃO ETRIP
+
+CREATE DATABASE etrip;
+CREATE USER etrip WITH PASSWORD 'etrip';
+GRANT ALL PRIVILEGES ON DATABASE webservice TO etrip;
+GRANT ALL ON ALL TABLES IN SCHEMA public to etrip;
+GRANT ALL ON ALL SEQUENCES IN SCHEMA public to etrip;
+GRANT ALL ON ALL FUNCTIONS IN SCHEMA public to etrip;
+CREATE EXTENSION unaccent;
+
+---------------------------------------------------------------------------------------
+
+CREATE DATABASE meuq;
+CREATE USER meuq WITH PASSWORD 'meuq';
+GRANT ALL PRIVILEGES ON DATABASE meuq TO meuq;
+GRANT ALL ON ALL TABLES IN SCHEMA public to meuq;
+GRANT ALL ON ALL SEQUENCES IN SCHEMA public to meuq;
+GRANT ALL ON ALL FUNCTIONS IN SCHEMA public to meuq;
+CREATE EXTENSION unaccent;
+
+
+---------------------------------------------------------------------------------------
+
+CONFIGURAÇÃO estoque_impacta
+
+CREATE DATABASE estoque_impacta;
+CREATE USER estoque_impacta WITH PASSWORD 'estoque_impacta';
+GRANT ALL PRIVILEGES ON DATABASE estoque_impacta TO estoque_impacta;
+GRANT ALL ON ALL TABLES IN SCHEMA public to estoque_impacta;
+GRANT ALL ON ALL SEQUENCES IN SCHEMA public to estoque_impacta;
+GRANT ALL ON ALL FUNCTIONS IN SCHEMA public to estoque_impacta;
+
+---------------------------------------------------------------------------------------
+
+CREATE DATABASE experience;
+CREATE USER experience WITH PASSWORD 'experience';
+GRANT ALL PRIVILEGES ON DATABASE experience TO experience;
+GRANT ALL ON ALL TABLES IN SCHEMA public to experience;
+GRANT ALL ON ALL SEQUENCES IN SCHEMA public to experience;
+GRANT ALL ON ALL FUNCTIONS IN SCHEMA public to experience;
+
+CREATE EXTENSION unaccent;
+
+
+---------------------------------------------------------------------------------------
+https://www.youtube.com/watch?v=iZDbENJrl4I
+---------------------------------------------------------------------------------------
+https://www.youtube.com/watch?v=224sBM-5dyo
+---------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------
+
+
+
+
+COMO RODAR O POSTGRESVIADOCKER
+
+docker container run -d --name=pg -p 5432:5432 -e POSTGRES_PASSWORD=secret -e PGDATA=/pgdata -v /pgdata:/pgdata postgres:13.5
+
+Uma vez criado, para acessar esta image docker com o postgres....
+sudo docker exec -it pg bash
+
+Dentro da imagem, nos devemos acessar o postgres.
+su postgres
+
+Acessando o psql
+psql
+
+Agora vamos criar um db_base para o nosso dump chamado experience e 
+dentro do psql vamos digitar.
+
+CREATE DATABASE meuq;
+CREATE USER meuq WITH PASSWORD 'meuq';
+GRANT ALL PRIVILEGES ON DATABASE meuq TO meuq;
+GRANT ALL ON ALL TABLES IN SCHEMA public to meuq;
+GRANT ALL ON ALL SEQUENCES IN SCHEMA public to meuq;
+GRANT ALL ON ALL FUNCTIONS IN SCHEMA public to meuq;
+CREATE EXTENSION unaccent;
+
+Vamos sair do psql
+\q
+
+
+pg_restore -U postgres -d meuq DUMPS/74258dc5-cd6e-428b-9e87-eb73bae2a1f6 
+
+
+---------------------------------------------------------------------------------------
+sudo docker cp 74258dc5-cd6e-428b-9e87-eb73bae2a1f6 cp:/DUMPS/
+
+
+---------------------------------------------------------------------------------------
+
+docker container run -d --name=pg -p 5432:5432 -e POSTGRES_PASSWORD=secret -e PGDATA=/pgdata -v /pgdata:/pgdata postgres:13.5
+
+
+pg_restore -U postgres -d meuq DUMPS/74258dc5-cd6e-428b-9e87-eb73bae2a1f6
+
+
+
+
+
+
+
+
+
+
+
+
+
