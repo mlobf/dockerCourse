@@ -93,3 +93,25 @@ Manage Images and Containers.
         sudo docker volume ls
     # Para criar uma named volume
     sudo docker run -d -p 3000:80 --rm --name feedback-app -v feedback:/app/feedback feedback-node:volumes
+
+
+    Removing Anonymous Volumes
+
+    We saw, that anonymous volumes are removed automatically, when a container is removed.
+
+    This happens when you start / run a container with the --rm option.
+
+    If you start a container without that option, the anonymous volume would NOT be removed, even if you remove the container (with docker rm ...).
+
+    Still, if you then re-create and re-run the container (i.e. you run docker run ... again), a new anonymous volume will be created. So even though the anonymous volume wasn't removed automatically, it'll also not be helpful because a different anonymous volume is attached the next time the container starts (i.e. you removed the old container and run a new one).
+
+    Now you just start piling up a bunch of unused anonymous volumes - you can clear them via docker volume rm VOL_NAME or docker volume prune.
+
+    # Get started with Bind Mounts.
+    Toda vez que alteramos alguma coisa at source code , this changes does not reflect at runing container. 
+    In order to do that, we have to rebuild it.
+    So ... the binds  mounts comes to helps us with this problem.
+
+    => sudo docker run -d -p 3000:80 --rm --name feedback-app -v feedback:/app/feedback -v "/home/mbf/Documents/pessoal/mygit/dockerMaxCourse/dockerCourse/data_docker/data-volumes-01-starting-setup/data-volumes-01-starting-setup:/app" feedback-node:volumes
+
+
