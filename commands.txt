@@ -133,8 +133,21 @@ Manage Images and Containers.
 
     sudo docker stop feedback-app
     sudo docker rm feedback-app
-    
+
     => sudo docker run -d -p 3000:80 --rm --name feedback-app -v feedback:/app/feedback -v "/home/mbf/Documents/pessoal/mygit/dockerMaxCourse/dockerCourse/data_docker/data-volumes-01-starting-setup/data-volumes-01-starting-setup:/app" -v /app/node_modules feedback-node:volumes
+    ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # How to solve the Nodemon problem 
+    # Lesson 54
+
+    sudo docker stop feedback-app
+    sudo docker rmi feedback-node:volumes
+    sudo docker build -t feedback-node:volumes .
+    sudo docker run -d -p 3000:80 --rm --name feedback-app -v feedback:/app/feedback -v "/home/mbf/Documents/pessoal/mygit/dockerMaxCourse/dockerCourse/data_docker/data-volumes-01-starting-setup/data-volumes-01-starting-setup:/app" -v /app/node_modules feedback-node:volumes
+    sudo docker logs feedback-app 
+    ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
 
 
 

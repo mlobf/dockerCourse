@@ -28,6 +28,11 @@ app.post("/create", async (req, res) => {
 
   const adjTitle = title.toLowerCase();
 
+  console.log("Test");
+  console.log("Test One");
+  console.log("Test Two");
+  console.log("Test 3333");
+
   const tempFilePath = path.join(__dirname, "temp", adjTitle + ".txt");
   const finalFilePath = path.join(__dirname, "feedback", adjTitle + ".txt");
 
