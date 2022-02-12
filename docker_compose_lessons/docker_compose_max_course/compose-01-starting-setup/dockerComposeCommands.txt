@@ -1,0 +1,11 @@
+# To detached mode.
+sudo docker-compose up -D
+
+# To remove end close all docker-compose 
+# It does not delete volumes.
+sudo docker-compose down
+
+# To remove end close all docker-compose with volumes.
+sudo docker-compose down -v
+
+
