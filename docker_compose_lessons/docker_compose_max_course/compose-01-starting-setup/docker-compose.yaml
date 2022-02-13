@@ -4,12 +4,14 @@ services:
     image: 'mongo'
     volumes:
       - data:/data/db
-    environment: 
+
+    container_name: 'mongo'
+    environment:
       MONGO_INITDB_ROOT_USERNAME: max
       MONGO_INITDB_ROOT_PASSWORD: secret
 
   backend:
-    build:  ./backend
+    build: ./backend
     ports:
       #host port : container internal port
       - '80:80'
@@ -19,7 +21,7 @@ services:
       - logs:/app/logs
       - ./backend:/app
       - /app/node_modules
-    environment: 
+    environment:
       MONGO_USERNAME: max
       MONGO_PASSWORD: secret
 
@@ -28,7 +30,7 @@ services:
       # You can add multiples dependecies using
       # - ...
       #
-    
+
 
   frontend:
     build: ./frontend
@@ -39,16 +41,12 @@ services:
 
     # To add -it, use code below
     stdin_open: true
-    tty:  true
+    tty: true
 
-
-    depends_on: 
+    depends_on:
       - backend
 
 volumes:
-  data:
-  # As the named volume "logs" has been created before.
+  data: # As the named volume "logs" has been created before.
   logs:
-
-
 
