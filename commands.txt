@@ -163,8 +163,19 @@ Manage Images and Containers.
         feedback-node:volumes
 
     ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    Para podermos rodar o exemplo do curso, temos que setar a versão do node para 14.
+    Do contrario , nao irar funcionar.
+    ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    Para remover images container e volumes usando o docker-compose
+     sudo docker-compose down -v
+    
+    Para remover todas as imagens
+     sudo docker image prune -a
 
+    Para remover todas as container
+     sudo docker container  prune
 
+    ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 
