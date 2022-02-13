@@ -8,5 +8,30 @@ services:
       MONGO_INITDB_ROOT_USERNAME: max
       MONGO_INITDB_ROOT_PASSWORD: secret
 
+  backend:
+    build:  ./backend
+    ports:
+      #host port : container internal port
+      - '80:80'
+      #The docker-compose creates a default network for all containers related
+    volumes:
+      # Add the named volume logs ...
+      - logs:/app/logs
+      - ./backend:/app
+      - /app/node_modules
+    environment: 
+      MONGO_USERNAME: max
+      MONGO_PASSWORD: secret
+
+    depends_on:
+      - mongodb
+      # You can add multiples dependecies using
+      # - ...
+      #
+      #
+      #frontend:
+
 volumes:
   data:
+  # As the named volume "logs" has been created before.
+  logs:
